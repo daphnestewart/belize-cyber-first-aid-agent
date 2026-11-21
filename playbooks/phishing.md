@@ -1,8 +1,8 @@
-#Phishing Incident Playbook
-#Description
+# Phishing Incident Playbook
+# Description
 A phishing attack attempts to trick users into revealing credentials, financial information, or downloading malicious software.
 
-#Immediate Actions
+# Immediate Actions
 Disconnect the affected device if malicious software was downloaded.
 Reset compromised passwords.
 Enable Multi-Factor Authentication (MFA).
@@ -13,10 +13,11 @@ Screenshots
 Email headers
 User statement
 Login activity logs
-Severity
+
+# Severity
 Medium to High
 
-#Recovery
+# Recovery
 Monitor affected accounts.
 Conduct awareness training.
 Review email security controls.
