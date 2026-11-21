@@ -1,14 +1,15 @@
-#Ransomware Incident Playbook
-#Immediate Actions
+# Ransomware Incident Playbook
+# Immediate Actions
 Isolate infected systems.
 Disconnect from the network.
 Preserve evidence.
 Notify management.
 Assess backup availability.
-Severity
+
+# Severity
 Critical
 
-#Recovery
+# Recovery
 Restore from clean backups.
 Validate system integrity.
 Reset credentials.
