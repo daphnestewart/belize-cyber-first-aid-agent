@@ -219,5 +219,24 @@ marimo/_static/
 marimo/_lsp/
 __marimo__/
 
-# Streamlit
+
+# Streamlit secrets
 .streamlit/secrets.toml
+
+# Local databases
+*.db
+*.sqlite
+
+# Logs
+logs/
+*.log
+
+# Generated incident reports
+generated_reports/
+
+# VS Code settings (optional)
+.vscode/
+
+# OS files
+.DS_Store
+Thumbs.db
