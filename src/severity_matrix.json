@@ -1,0 +1,72 @@
+{
+  "Low": {
+    "priority": "Normal",
+    "response_target": "Within 1 business day",
+    "characteristics": [
+      "Minimal business impact",
+      "No sensitive information involved",
+      "Incident contained quickly",
+      "Single user affected"
+    ],
+    "examples": [
+      "Suspicious email reported before interaction",
+      "Blocked login attempt",
+      "Minor security alert"
+    ],
+    "escalate": false
+  },
+
+  "Medium": {
+    "priority": "High",
+    "response_target": "Same business day",
+    "characteristics": [
+      "Limited operational impact",
+      "Potential credential exposure",
+      "Limited number of users affected",
+      "No confirmed sensitive data exposure"
+    ],
+    "examples": [
+      "Phishing link clicked",
+      "Lost encrypted device",
+      "Unauthorized login attempt detected"
+    ],
+    "escalate": false
+  },
+
+  "High": {
+    "priority": "Very High",
+    "response_target": "Immediate",
+    "characteristics": [
+      "Sensitive information involved",
+      "Multiple users or systems affected",
+      "Significant business disruption",
+      "Potential regulatory concerns"
+    ],
+    "examples": [
+      "Customer information exposed",
+      "Unauthorized account access confirmed",
+      "Employee records accessed",
+      "Business email compromise"
+    ],
+    "escalate": true
+  },
+
+  "Critical": {
+    "priority": "Emergency",
+    "response_target": "Immediate",
+    "characteristics": [
+      "Major business disruption",
+      "Widespread compromise",
+      "Critical systems unavailable",
+      "Large-scale information exposure",
+      "Administrator account compromise"
+    ],
+    "examples": [
+      "Ransomware outbreak",
+      "Major data breach",
+      "Multiple compromised administrator accounts",
+      "Organization-wide service disruption"
+    ],
+    "escalate": true
+  }
+}
