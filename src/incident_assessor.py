@@ -1,19 +1,26 @@
+INCIDENT_TYPES = {
+    "phishing": "Medium",
+    "malware": "Medium",
+    "data breach": "High",
+    "unauthorized access": "High",
+    "ransomware": "Critical",
+    "lost device": "Medium",
+}
+
+
 def assess_incident(description):
     description = description.lower()
 
-    if "ransomware" in description:
-        return "Critical"
+    for incident, severity in INCIDENT_TYPES.items():
+        if incident in description:
+            return incident.title(), severity
 
-    if "data breach" in description:
-        return "High"
-
-    if "phishing" in description:
-        return "Medium"
-
-    return "Low"
+    return "Unknown", "Low"
 
 
 incident = input("Describe the incident: ")
-severity = assess_incident(incident)
 
-print(f"Incident Severity: {severity}")
+incident_type, severity = assess_incident(incident)
+
+print(f"Incident Type: {incident_type}")
+print(f"Severity: {severity}")
