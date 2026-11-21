@@ -1,66 +1,214 @@
-# Unauthorized Access Incident Playbook
+# Lost Device Incident Playbook
 
-## Description
+## Overview
 
-An unauthorized access incident occurs when an individual gains access to a system, application, account, or resource without proper authorization.
+A lost device incident occurs when a business-owned or business-used device cannot be located or is suspected to have been stolen.
 
-Examples include:
+Examples:
 
-- Unknown account login
-- Compromised credentials
-- Shared account misuse
-- Suspicious administrator activity
-- Unauthorized access to files or databases
+- Lost laptop
+- Stolen mobile phone
+- Missing USB drive
+- Missing tablet
+- Missing external hard drive
+
+---
+
+## Incident Objectives
+
+1. Protect business information.
+2. Prevent unauthorized access.
+3. Preserve evidence.
+4. Determine potential impact.
+5. Restore business operations.
+
+---
+
+## Initial Assessment
+
+Document:
+
+| Information | Value |
+|-------------|---------|
+| Device Type | |
+| Owner/User | |
+| Serial Number | |
+| Last Known Location | |
+| Date Lost | |
+| Date Reported | |
+
+---
 
 ## Immediate Actions
 
-1. Identify affected accounts and systems.
-2. Disable or lock compromised accounts.
-3. Reset passwords immediately.
-4. Enable or enforce Multi-Factor Authentication (MFA).
-5. Terminate suspicious active sessions.
-6. Preserve logs and audit records.
-7. Notify management and relevant stakeholders.
+### Step 1: Confirm Loss
 
-## Evidence Collection
+Verify:
 
-- Login timestamps
-- User account information
-- Source IP addresses
-- Authentication logs
-- Screenshots of suspicious activity
-- System audit records
+- Device is not misplaced on-site.
+- Device is not with another employee.
+- Device is not currently checked out.
 
-## Severity Assessment
+---
+
+### Step 2: Report Incident
+
+Notify:
+
+- Business owner
+- IT administrator
+- Security manager (if applicable)
+
+Record:
+
+- When loss was discovered
+- Who reported it
+- Circumstances
+
+---
+
+### Step 3: Secure Accounts
+
+Immediately:
+
+- Change password
+- Revoke active sessions
+- Reset business application access
+- Enable MFA
+
+Accounts to review:
+
+- Microsoft 365
+- Email
+- Banking systems
+- CRM systems
+- Accounting software
+
+---
+
+### Step 4: Remote Protection
+
+If supported:
+
+- Lock device remotely
+- Locate device remotely
+- Wipe device remotely
+
+Document actions taken.
+
+---
+
+## Exposure Assessment
+
+Determine:
+
+### Was Device Encrypted?
+
+Yes / No
+
+### Was MFA Enabled?
+
+Yes / No
+
+### Did Device Contain:
+
+- Customer data
+- Employee records
+- Financial information
+- Contracts
+- Passwords
+
+---
+
+## Investigation
+
+Review:
+
+- Login records
+- Cloud access logs
+- Email activity
+- VPN activity
+
+Look for:
+
+- Access after loss occurred
+- New locations
+- Suspicious sign-ins
+
+---
+
+## Severity Classification
+
+### Low
+
+- Device encrypted
+- No sensitive information saved
 
 ### Medium
 
-- Single user account affected
-- No evidence of data access
+- Email access available
+- Business applications installed
 
 ### High
 
-- Sensitive information accessed
-- Multiple accounts affected
+- Sensitive business information stored locally
+- Financial systems accessible
 
 ### Critical
 
-- Administrative or privileged account compromised
-- Significant business impact
-- Evidence of data theft or destruction
+- Device belonged to administrator
+- Highly sensitive data present
+- Active unauthorized usage detected
 
-## Recovery
+---
 
-1. Verify compromised accounts are secured.
-2. Review recent account activity.
-3. Remove unauthorized access permissions.
-4. Update security controls.
-5. Monitor systems for recurring activity.
+## Recovery Actions
+
+### Replace Device
+
+- Issue replacement hardware
+- Reinstall approved software
+- Apply security settings
+
+### Restore Data
+
+- Restore from backup
+- Validate integrity
+
+### Strengthen Protections
+
+- Enable encryption
+- Require MFA
+- Maintain device inventory
+
+---
+
+## Communication
+
+Provide management with:
+
+- Incident summary
+- Potential impact
+- Actions taken
+- Current status
+- Recommendations
+
+---
 
 ## Lessons Learned
 
-- Enforce strong password policies.
-- Require Multi-Factor Authentication (MFA).
-- Conduct regular access reviews.
-- Implement account monitoring and alerting.
-- Follow the principle of least privilege.
+Review:
+
+- Asset management process
+- Device inventory records
+- Backup procedures
+- Remote wipe capability
+- User awareness training
+
+Recommended Controls:
+
+- Microsoft Intune
+- Device encryption
+- MFA
+- Endpoint protection
+- Asset tracking
