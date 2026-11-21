@@ -1,0 +1,61 @@
+{
+  "phishing": {
+    "severity": "Medium",
+    "privacy_impact": "Low",
+    "playbook": "phishing.md",
+    "actions": [
+      "Preserve the email.",
+      "Reset credentials if entered.",
+      "Enable MFA.",
+      "Review login activity."
+    ]
+  },
+
+  "unauthorized access": {
+    "severity": "High",
+    "privacy_impact": "Medium",
+    "playbook": "unauthorized-access.md",
+    "actions": [
+      "Disable compromised accounts.",
+      "Reset passwords.",
+      "Preserve logs.",
+      "Review recent activity."
+    ]
+  },
+
+  "data breach": {
+    "severity": "High",
+    "privacy_impact": "High",
+    "playbook": "data-breach.md",
+    "actions": [
+      "Contain the breach.",
+      "Identify exposed information.",
+      "Preserve evidence.",
+      "Begin privacy impact assessment."
+    ]
+  },
+
+  "ransomware": {
+    "severity": "Critical",
+    "privacy_impact": "High",
+    "playbook": "ransomware.md",
+    "actions": [
+      "Disconnect affected systems.",
+      "Preserve evidence.",
+      "Notify management.",
+      "Assess backup availability."
+    ]
+  },
+
+  "lost device": {
+    "severity": "Medium",
+    "privacy_impact": "Medium",
+    "playbook": "lost-device.md",
+    "actions": [
+      "Report device loss.",
+      "Revoke active sessions.",
+      "Change passwords.",
+      "Determine data exposure."
+    ]
+  }
+}
