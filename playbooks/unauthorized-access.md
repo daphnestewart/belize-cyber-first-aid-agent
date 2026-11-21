@@ -1,66 +1,199 @@
 # Unauthorized Access Incident Playbook
 
-## Description
+## Overview
 
-An unauthorized access incident occurs when an individual gains access to a system, application, account, or resource without proper authorization.
+An unauthorized access incident occurs when an individual gains access to a system, account, application, network resource, or data without proper authorization.
 
-Examples include:
+Examples:
 
-- Unknown account login
-- Compromised credentials
-- Shared account misuse
-- Suspicious administrator activity
-- Unauthorized access to files or databases
+- Unknown Microsoft 365 login
+- Suspicious VPN connection
+- Unauthorized password changes
+- New administrator account creation
+- Unexpected file access
+- Former employee account still active
 
-## Immediate Actions
+---
 
-1. Identify affected accounts and systems.
-2. Disable or lock compromised accounts.
-3. Reset passwords immediately.
-4. Enable or enforce Multi-Factor Authentication (MFA).
-5. Terminate suspicious active sessions.
-6. Preserve logs and audit records.
-7. Notify management and relevant stakeholders.
+## Incident Objectives
 
-## Evidence Collection
+1. Stop unauthorized activity.
+2. Prevent additional access.
+3. Preserve evidence.
+4. Determine what was accessed.
+5. Restore secure operations.
+6. Document all actions.
 
-- Login timestamps
-- User account information
-- Source IP addresses
-- Authentication logs
-- Screenshots of suspicious activity
-- System audit records
+---
 
-## Severity Assessment
+## Initial Assessment
+
+Gather the following information:
+
+| Question | Response |
+|-----------|------------|
+| Who discovered the incident? | |
+| Date and time discovered? | |
+| Affected account(s)? | |
+| Affected systems? | |
+| Sensitive data involved? | |
+| Is access ongoing? | |
+| Is business operation affected? | |
+
+---
+
+## Immediate Containment Actions
+
+### Step 1: Secure Affected Accounts
+
+- Disable compromised accounts.
+- Force password reset.
+- Enable MFA if not already enabled.
+- Revoke active sessions.
+
+Microsoft 365:
+
+- Sign out user from all sessions.
+- Review recent sign-ins.
+- Review mailbox rules.
+
+---
+
+### Step 2: Isolate Affected Systems
+
+If malware or remote access is suspected:
+
+- Disconnect system from network.
+- Leave the device powered on.
+- Do not delete files.
+- Do not reformat the device.
+
+---
+
+### Step 3: Preserve Evidence
+
+Collect:
+
+- Screenshots
+- Login records
+- Security alerts
+- Email notifications
+- User statements
+- File access logs
+
+Record all times in local Belize time.
+
+---
+
+## Investigation
+
+### Determine:
+
+#### How Access Occurred
+
+Possible causes:
+
+- Weak password
+- Password reuse
+- Phishing
+- Shared credentials
+- Misconfigured permissions
+
+#### What Was Accessed
+
+Review:
+
+- Email inboxes
+- Shared drives
+- Financial records
+- Customer databases
+- Cloud services
+
+#### What Was Changed
+
+Identify:
+
+- Password changes
+- New accounts
+- New forwarding rules
+- Deleted files
+- Modified permissions
+
+---
+
+## Severity Classification
 
 ### Medium
 
-- Single user account affected
-- No evidence of data access
+- Single user account compromised
+- No sensitive information accessed
 
 ### High
 
-- Sensitive information accessed
 - Multiple accounts affected
+- Confidential data accessed
+- Financial systems involved
 
 ### Critical
 
-- Administrative or privileged account compromised
-- Significant business impact
-- Evidence of data theft or destruction
+- Administrator account compromised
+- Customer data exposed
+- Major operational disruption
 
-## Recovery
+---
 
-1. Verify compromised accounts are secured.
-2. Review recent account activity.
-3. Remove unauthorized access permissions.
-4. Update security controls.
-5. Monitor systems for recurring activity.
+## Recovery Actions
+
+### Account Security
+
+- Reset passwords
+- Enable MFA
+- Remove unauthorized accounts
+- Remove unauthorized permissions
+
+### System Validation
+
+- Perform malware scan
+- Review installed software
+- Review security logs
+
+### Monitoring
+
+Monitor for at least:
+
+- Failed logins
+- New administrator accounts
+- Unusual file access
+- Unusual email activity
+
+---
+
+## Communication
+
+Notify:
+
+- Management
+- IT Support Provider
+- Business Owner
+
+If personal information may have been exposed:
+
+- Assess reporting obligations.
+- Document all decisions.
+
+---
 
 ## Lessons Learned
 
-- Enforce strong password policies.
-- Require Multi-Factor Authentication (MFA).
-- Conduct regular access reviews.
-- Implement account monitoring and alerting.
-- Follow the principle of least privilege.
+Identify:
+
+- Why access was possible
+- Missing controls
+- Training opportunities
+- Required security improvements
+
+Examples:
+
+- MFA was not enabled.
+- Password policy was weak.
+- Excessive permissions existed.
