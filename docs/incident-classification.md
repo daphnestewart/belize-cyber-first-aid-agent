@@ -1,8 +1,6 @@
-# Incident Classification Framework
+# Dorothy Incident Classification Framework
 
-## Purpose
-
-The Belize Cyber First Aid Agent Incident Classification Framework provides a structured approach for identifying, assessing, prioritizing, documenting, responding to, and recovering from cybersecurity incidents affecting small and medium-sized businesses (SMEs) in Belize.
+The Dorothy Incident Classification Framework provides a structured approach for identifying, assessing, prioritizing, documenting, responding to, and recovering from cybersecurity incidents affecting small and medium-sized businesses (SMEs) in Belize.
 
 The framework is designed to:
 
