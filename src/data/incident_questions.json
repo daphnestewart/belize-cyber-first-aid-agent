@@ -1,22 +1,126 @@
 {
-  "phishing": [
-    "Was the email opened?",
-    "Was a link clicked?",
-    "Were credentials entered?",
-    "Was an attachment opened?"
-  ],
+  "phishing": {
+    "initial_questions": [
+      "When was the phishing email received?",
+      "Who reported the incident?",
+      "Was the email opened?",
+      "Was a link clicked?",
+      "Was an attachment opened?",
+      "Were credentials entered into a website?"
+    ],
+    "business_impact_questions": [
+      "How many users received the email?",
+      "Has business operation been affected?",
+      "Were any financial transactions requested or completed?"
+    ],
+    "privacy_questions": [
+      "Did the account contain customer information?",
+      "Did the account contain employee information?",
+      "Could personal data have been accessed?"
+    ]
+  },
 
-  "ransomware": [
-    "Are files encrypted?",
-    "How many systems are affected?",
-    "Are backups available?",
-    "Has the system been disconnected from the network?"
-  ],
+  "unauthorized_access": {
+    "initial_questions": [
+      "How was the unauthorized access discovered?",
+      "Which account was accessed?",
+      "When was the suspicious activity identified?",
+      "Is the unauthorized access still occurring?"
+    ],
+    "business_impact_questions": [
+      "How many accounts are affected?",
+      "Are critical systems affected?",
+      "Has business operation been disrupted?",
+      "Was an administrator account involved?"
+    ],
+    "privacy_questions": [
+      "Was customer data accessible?",
+      "Was employee information accessible?",
+      "Was sensitive personal data involved?",
+      "Do you know whether information was viewed, copied, or downloaded?"
+    ]
+  },
 
-  "data_breach": [
-    "What information was exposed?",
-    "How many individuals may be affected?",
-    "Is personal data involved?",
-    "Is sensitive personal data involved?"
-  ]
+  "data_breach": {
+    "initial_questions": [
+      "How was the breach discovered?",
+      "What information was exposed?",
+      "When was the exposure identified?",
+      "Is the exposure still ongoing?"
+    ],
+    "business_impact_questions": [
+      "How many systems are affected?",
+      "How many records may be involved?",
+      "Has business operation been affected?"
+    ],
+    "privacy_questions": [
+      "Does the affected data contain customer information?",
+      "Does the affected data contain employee information?",
+      "Does the affected data contain financial information?",
+      "Does the affected data contain sensitive personal data?",
+      "Approximately how many individuals may be affected?"
+    ]
+  },
+
+  "ransomware": {
+    "initial_questions": [
+      "When was the ransomware discovered?",
+      "How many systems appear affected?",
+      "Are files encrypted?",
+      "Was a ransom note observed?"
+    ],
+    "business_impact_questions": [
+      "Can employees still access essential systems?",
+      "Are customer-facing services affected?",
+      "Are shared drives inaccessible?",
+      "Are backups available?"
+    ],
+    "privacy_questions": [
+      "Do the affected systems contain customer data?",
+      "Do the affected systems contain employee records?",
+      "Is sensitive personal data stored on these systems?",
+      "Is there evidence that information was copied or stolen?"
+    ]
+  },
+
+  "lost_device": {
+    "initial_questions": [
+      "What type of device was lost or stolen?",
+      "Who was assigned the device?",
+      "When was it last seen?",
+      "When was the loss discovered?"
+    ],
+    "business_impact_questions": [
+      "Was the device encrypted?",
+      "Did the device contain business applications?",
+      "Did the device contain administrator access?",
+      "Has remote lock or wipe been attempted?"
+    ],
+    "privacy_questions": [
+      "Did the device contain customer information?",
+      "Did the device contain employee information?",
+      "Did the device contain sensitive personal data?",
+      "Could unauthorized individuals access information stored on the device?"
+    ]
+  },
+
+  "generic": {
+    "initial_questions": [
+      "What happened?",
+      "When did it happen?",
+      "When was it discovered?",
+      "Who discovered it?"
+    ],
+    "business_impact_questions": [
+      "Which systems are affected?",
+      "How many users are affected?",
+      "Has business operation been disrupted?"
+    ],
+    "privacy_questions": [
+      "Is personal data involved?",
+      "Is customer information involved?",
+      "Is employee information involved?",
+      "Is sensitive personal data involved?"
+    ]
+  }
 }
