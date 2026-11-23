@@ -1,61 +1,172 @@
 {
   "phishing": {
-    "severity": "Medium",
-    "privacy_impact": "Low",
-    "playbook": "phishing.md",
-    "actions": [
-      "Preserve the email.",
-      "Reset credentials if entered.",
-      "Enable MFA.",
-      "Review login activity."
+    "name": "Phishing",
+    "category": "Phishing",
+    "description": "Attempts to deceive users into revealing credentials, transferring funds, disclosing information, or installing malware.",
+    "default_severity": "Medium",
+    "default_privacy_impact": "Low",
+    "escalate": false,
+    "playbook": "playbooks/phishing.md",
+    "nist_functions": [
+      "Govern",
+      "Identify",
+      "Protect",
+      "Detect",
+      "Respond",
+      "Recover"
+    ],
+    "immediate_actions": [
+      "Preserve the suspicious email.",
+      "Determine whether links were clicked.",
+      "Determine whether credentials were entered.",
+      "Enable Multi-Factor Authentication if not already enabled.",
+      "Review account sign-in activity."
+    ],
+    "keywords": [
+      "phishing",
+      "malicious email",
+      "suspicious email",
+      "credential harvesting",
+      "fake login",
+      "fake microsoft",
+      "spoofed email",
+      "business email compromise",
+      "bec"
     ]
   },
 
-  "unauthorized access": {
-    "severity": "High",
-    "privacy_impact": "Medium",
-    "playbook": "unauthorized-access.md",
-    "actions": [
+  "unauthorized_access": {
+    "name": "Unauthorized Access",
+    "category": "Unauthorized Access",
+    "description": "Access to systems, applications, accounts, or information without authorization.",
+    "default_severity": "High",
+    "default_privacy_impact": "Medium",
+    "escalate": true,
+    "playbook": "playbooks/unauthorized-access.md",
+    "nist_functions": [
+      "Govern",
+      "Identify",
+      "Detect",
+      "Respond",
+      "Recover"
+    ],
+    "immediate_actions": [
       "Disable compromised accounts.",
       "Reset passwords.",
-      "Preserve logs.",
-      "Review recent activity."
+      "Revoke active sessions.",
+      "Preserve logs and evidence.",
+      "Review recent account activity."
+    ],
+    "keywords": [
+      "unauthorized access",
+      "account compromise",
+      "unknown login",
+      "suspicious login",
+      "admin account",
+      "privilege escalation",
+      "unauthorized user",
+      "compromised account"
     ]
   },
 
-  "data breach": {
-    "severity": "High",
-    "privacy_impact": "High",
-    "playbook": "data-breach.md",
-    "actions": [
+  "data_breach": {
+    "name": "Data Breach",
+    "category": "Data Breach",
+    "description": "Unauthorized access, disclosure, alteration, loss, theft, or destruction of information.",
+    "default_severity": "High",
+    "default_privacy_impact": "High",
+    "escalate": true,
+    "playbook": "playbooks/data-breach.md",
+    "nist_functions": [
+      "Govern",
+      "Identify",
+      "Detect",
+      "Respond",
+      "Recover"
+    ],
+    "immediate_actions": [
       "Contain the breach.",
-      "Identify exposed information.",
+      "Identify affected records.",
       "Preserve evidence.",
-      "Begin privacy impact assessment."
+      "Begin privacy impact assessment.",
+      "Assess Belize Data Protection obligations."
+    ],
+    "keywords": [
+      "data breach",
+      "data leak",
+      "exposed records",
+      "database exposed",
+      "information disclosure",
+      "customer data",
+      "employee records",
+      "sensitive data"
     ]
   },
 
   "ransomware": {
-    "severity": "Critical",
-    "privacy_impact": "High",
-    "playbook": "ransomware.md",
-    "actions": [
-      "Disconnect affected systems.",
+    "name": "Ransomware",
+    "category": "Ransomware",
+    "description": "Malware that encrypts, disrupts, steals, or blocks access to information and demands payment.",
+    "default_severity": "Critical",
+    "default_privacy_impact": "High",
+    "escalate": true,
+    "playbook": "playbooks/ransomware.md",
+    "nist_functions": [
+      "Govern",
+      "Identify",
+      "Detect",
+      "Respond",
+      "Recover"
+    ],
+    "immediate_actions": [
+      "Disconnect affected systems from the network.",
       "Preserve evidence.",
-      "Notify management.",
+      "Prevent further spread.",
+      "Notify management immediately.",
       "Assess backup availability."
+    ],
+    "keywords": [
+      "ransomware",
+      "encrypted files",
+      "ransom note",
+      "locked files",
+      "crypto malware",
+      "extortion",
+      "encrypted drive"
     ]
   },
 
-  "lost device": {
-    "severity": "Medium",
-    "privacy_impact": "Medium",
-    "playbook": "lost-device.md",
-    "actions": [
-      "Report device loss.",
+  "lost_device": {
+    "name": "Lost or Stolen Device",
+    "category": "Lost Device",
+    "description": "A business-owned or business-used device cannot be located or is suspected stolen.",
+    "default_severity": "Medium",
+    "default_privacy_impact": "Medium",
+    "escalate": false,
+    "playbook": "playbooks/lost-device.md",
+    "nist_functions": [
+      "Govern",
+      "Identify",
+      "Protect",
+      "Respond",
+      "Recover"
+    ],
+    "immediate_actions": [
+      "Report the loss immediately.",
       "Revoke active sessions.",
       "Change passwords.",
-      "Determine data exposure."
+      "Attempt remote lock or wipe.",
+      "Assess data exposure."
+    ],
+    "keywords": [
+      "lost laptop",
+      "stolen laptop",
+      "lost phone",
+      "stolen phone",
+      "lost device",
+      "stolen device",
+      "missing usb",
+      "lost tablet"
     ]
   }
 }
