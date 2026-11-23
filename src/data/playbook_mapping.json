@@ -1,0 +1,127 @@
+{
+  "phishing": {
+    "name": "Phishing Incident Playbook",
+    "file_path": "playbooks/phishing.md",
+    "incident_category": "Phishing",
+    "business_severity_range": [
+      "Low",
+      "Medium",
+      "High",
+      "Critical"
+    ],
+    "privacy_impact_range": [
+      "Low",
+      "Medium",
+      "High"
+    ],
+    "escalation_possible": true,
+    "nist_functions": [
+      "Govern",
+      "Identify",
+      "Protect",
+      "Detect",
+      "Respond",
+      "Recover"
+    ],
+    "belize_data_protection_review": true,
+    "description": "Guidance for phishing, credential harvesting, business email compromise, malicious links, and malicious attachments."
+  },
+
+  "unauthorized_access": {
+    "name": "Unauthorized Access Incident Playbook",
+    "file_path": "playbooks/unauthorized-access.md",
+    "incident_category": "Unauthorized Access",
+    "business_severity_range": [
+      "Medium",
+      "High",
+      "Critical"
+    ],
+    "privacy_impact_range": [
+      "Medium",
+      "High",
+      "Critical"
+    ],
+    "escalation_possible": true,
+    "nist_functions": [
+      "Govern",
+      "Identify",
+      "Detect",
+      "Respond",
+      "Recover"
+    ],
+    "belize_data_protection_review": true,
+    "description": "Guidance for compromised accounts, suspicious logins, unauthorized activity, privilege escalation, and account takeover events."
+  },
+
+  "data_breach": {
+    "name": "Data Breach Incident Playbook",
+    "file_path": "playbooks/data-breach.md",
+    "incident_category": "Data Breach",
+    "business_severity_range": [
+      "High",
+      "Critical"
+    ],
+    "privacy_impact_range": [
+      "High",
+      "Critical"
+    ],
+    "escalation_possible": true,
+    "nist_functions": [
+      "Govern",
+      "Identify",
+      "Detect",
+      "Respond",
+      "Recover"
+    ],
+    "belize_data_protection_review": true,
+    "description": "Guidance for actual or suspected exposure, loss, theft, disclosure, alteration, or destruction of information."
+  },
+
+  "ransomware": {
+    "name": "Ransomware Incident Playbook",
+    "file_path": "playbooks/ransomware.md",
+    "incident_category": "Ransomware",
+    "business_severity_range": [
+      "Critical"
+    ],
+    "privacy_impact_range": [
+      "High",
+      "Critical"
+    ],
+    "escalation_possible": true,
+    "nist_functions": [
+      "Govern",
+      "Identify",
+      "Detect",
+      "Respond",
+      "Recover"
+    ],
+    "belize_data_protection_review": true,
+    "description": "Guidance for ransomware attacks, encrypted files, extortion attempts, and business disruption events."
+  },
+
+  "lost_device": {
+    "name": "Lost or Stolen Device Incident Playbook",
+    "file_path": "playbooks/lost-device.md",
+    "incident_category": "Lost or Stolen Device",
+    "business_severity_range": [
+      "Medium",
+      "High"
+    ],
+    "privacy_impact_range": [
+      "Medium",
+      "High",
+      "Critical"
+    ],
+    "escalation_possible": true,
+    "nist_functions": [
+      "Govern",
+      "Identify",
+      "Protect",
+      "Respond",
+      "Recover"
+    ],
+    "belize_data_protection_review": true,
+    "description": "Guidance for lost, stolen, misplaced, or unaccounted-for business devices and removable media."
+  }
+}
