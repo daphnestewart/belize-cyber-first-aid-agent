@@ -9,7 +9,7 @@
       "Single user affected"
     ],
     "examples": [
-      "Suspicious email reported before interaction",
+      "Phishing email reported before interaction",
       "Blocked login attempt",
       "Minor security alert"
     ],
