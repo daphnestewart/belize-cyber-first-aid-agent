@@ -1,0 +1,50 @@
+{
+  "customer_information": {
+    "classification": "Personal Data",
+    "privacy_impact": "High",
+    "examples": [
+      "customer name",
+      "customer email",
+      "customer phone number",
+      "customer address",
+      "customer account information"
+    ]
+  },
+
+  "employee_information": {
+    "classification": "Personal Data",
+    "privacy_impact": "High",
+    "examples": [
+      "employee records",
+      "personnel file",
+      "employee email",
+      "employee phone number",
+      "employment information"
+    ]
+  },
+
+  "financial_information": {
+    "classification": "Personal Data",
+    "privacy_impact": "High",
+    "examples": [
+      "bank account",
+      "payment information",
+      "billing records",
+      "financial transactions",
+      "credit card"
+    ]
+  },
+
+  "sensitive_personal_data": {
+    "classification": "Sensitive Personal Data",
+    "privacy_impact": "Critical",
+    "examples": [
+      "medical records",
+      "health information",
+      "biometric data",
+      "religious beliefs",
+      "political opinions",
+      "trade union membership"
+    ]
+  }
+}
