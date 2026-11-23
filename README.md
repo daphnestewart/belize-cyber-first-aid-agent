@@ -1,3 +1,7 @@
+<p align="center">
+  <img src="assets/Dorothy.jpg" width="250">
+</p>
+
 # Dorothy
 
 ## The Belize Cyber First Aid Agent
