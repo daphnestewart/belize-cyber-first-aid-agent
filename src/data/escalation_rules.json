@@ -1,0 +1,147 @@
+{
+  "automatic_escalation": {
+    "incident_types": [
+      "ransomware",
+      "data_breach"
+    ],
+
+    "severity_levels": [
+      "High",
+      "Critical"
+    ],
+
+    "privacy_impact_levels": [
+      "High",
+      "Critical"
+    ]
+  },
+
+  "business_impact_triggers": [
+    {
+      "trigger": "critical_system_unavailable",
+      "reason": "Critical business services are unavailable."
+    },
+    {
+      "trigger": "multiple_systems_affected",
+      "reason": "Multiple systems are affected."
+    },
+    {
+      "trigger": "business_disruption",
+      "reason": "Business operations have been disrupted."
+    },
+    {
+      "trigger": "financial_loss",
+      "reason": "Financial loss has occurred or is likely."
+    },
+    {
+      "trigger": "customer_service_disruption",
+      "reason": "Customer-facing services are impacted."
+    }
+  ],
+
+  "data_protection_triggers": [
+    {
+      "trigger": "customer_data",
+      "reason": "Customer information may be involved."
+    },
+    {
+      "trigger": "employee_data",
+      "reason": "Employee information may be involved."
+    },
+    {
+      "trigger": "financial_information",
+      "reason": "Financial information may be involved."
+    },
+    {
+      "trigger": "sensitive_personal_data",
+      "reason": "Sensitive personal data may be involved."
+    },
+    {
+      "trigger": "large_volume_records",
+      "reason": "Large numbers of records may be affected."
+    }
+  ],
+
+  "account_compromise_triggers": [
+    {
+      "trigger": "administrator_account",
+      "reason": "Administrator account compromise detected."
+    },
+    {
+      "trigger": "privileged_account",
+      "reason": "Privileged account compromise detected."
+    },
+    {
+      "trigger": "multiple_user_accounts",
+      "reason": "Multiple user accounts affected."
+    }
+  ],
+
+  "fraud_triggers": [
+    {
+      "trigger": "wire_transfer",
+      "reason": "Potential financial fraud detected."
+    },
+    {
+      "trigger": "payment_diversion",
+      "reason": "Potential payment diversion detected."
+    },
+    {
+      "trigger": "business_email_compromise",
+      "reason": "Business Email Compromise detected."
+    }
+  ],
+
+  "belize_data_protection_review_triggers": [
+    "customer_data",
+    "employee_data",
+    "financial_information",
+    "sensitive_personal_data",
+    "large_volume_records",
+    "data_breach",
+    "ransomware"
+  ],
+
+  "notification_recommendations": {
+    "low": [
+      "Document the incident."
+    ],
+
+    "medium": [
+      "Notify management.",
+      "Document findings."
+    ],
+
+    "high": [
+      "Notify management immediately.",
+      "Conduct privacy assessment.",
+      "Initiate escalation procedures."
+    ],
+
+    "critical": [
+      "Notify management immediately.",
+      "Initiate executive-level escalation.",
+      "Conduct privacy impact assessment.",
+      "Coordinate incident response activities."
+    ]
+  },
+
+  "response_time_targets": {
+    "Low": {
+      "priority": "Normal",
+      "target": "Within 1 business day"
+    },
+    "Medium": {
+      "priority": "High",
+      "target": "Same business day"
+    },
+    "High": {
+      "priority": "Very High",
+      "target": "Immediate"
+    },
+    "Critical": {
+      "priority": "Emergency",
+      "target": "Immediate"
+    }
+  }
+}
