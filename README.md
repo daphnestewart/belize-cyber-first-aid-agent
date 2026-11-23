@@ -1,5 +1,5 @@
 <p align="center">
-  <img src="assets/Dorothy.jpg" width="250">
+  <img src="assets/LogoOnly.png" width="250">
 </p>
 
 # Dorothy
