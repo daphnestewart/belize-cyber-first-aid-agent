@@ -1,0 +1,101 @@
+{
+  "Low": {
+    "priority": "Normal",
+    "review_required": false,
+    "personal_data_involved": false,
+    "description": "No personal data involved and no unauthorized disclosure identified.",
+    "characteristics": [
+      "No personal data involved",
+      "No unauthorized disclosure",
+      "No impact on data subjects",
+      "No privacy concerns identified"
+    ],
+    "examples": [
+      "Phishing email reported without interaction",
+      "Malware blocked before execution",
+      "Failed login attempt with no compromise"
+    ],
+    "recommended_actions": [
+      "Document the incident",
+      "Confirm no personal data exposure",
+      "Close incident after verification"
+    ]
+  },
+
+  "Medium": {
+    "priority": "High",
+    "review_required": true,
+    "personal_data_involved": true,
+    "description": "Limited personal data exposure is possible but there is no evidence of misuse.",
+    "characteristics": [
+      "Limited personal data exposure possible",
+      "Small number of individuals potentially affected",
+      "No confirmed unauthorized disclosure",
+      "No evidence of misuse"
+    ],
+    "examples": [
+      "Lost encrypted laptop",
+      "Lost mobile phone with business access",
+      "Unauthorized access attempt involving personal information"
+    ],
+    "recommended_actions": [
+      "Perform privacy assessment",
+      "Determine affected data categories",
+      "Document findings",
+      "Monitor for misuse"
+    ]
+  },
+
+  "High": {
+    "priority": "Very High",
+    "review_required": true,
+    "personal_data_involved": true,
+    "description": "Personal data has likely been accessed, exposed, disclosed, altered, or lost.",
+    "characteristics": [
+      "Customer information involved",
+      "Employee information involved",
+      "Confirmed data exposure",
+      "Potential harm to affected individuals"
+    ],
+    "examples": [
+      "Customer database exposure",
+      "Employee records accessed",
+      "Personal data disclosed to unauthorized recipient",
+      "Compromised account containing personal information"
+    ],
+    "recommended_actions": [
+      "Perform detailed privacy impact assessment",
+      "Determine affected individuals",
+      "Document incident thoroughly",
+      "Review reporting and notification considerations",
+      "Escalate to management"
+    ]
+  },
+
+  "Critical": {
+    "priority": "Emergency",
+    "review_required": true,
+    "personal_data_involved": true,
+    "description": "Large-scale exposure or compromise of personal data, especially sensitive personal data, creating significant risk to affected individuals.",
+    "characteristics": [
+      "Large-scale personal data exposure",
+      "Sensitive personal data involved",
+      "High risk of harm",
+      "Significant legal, regulatory, or reputational impact"
+    ],
+    "examples": [
+      "Large customer database stolen",
+      "Medical information exposed",
+      "Payroll system breach",
+      "Mass disclosure of sensitive records"
+    ],
+    "recommended_actions": [
+      "Escalate immediately",
+      "Conduct full privacy impact assessment",
+      "Preserve evidence",
+      "Engage management",
+      "Review notification obligations",
+      "Document all decisions and actions"
+    ]
+  }
+}
