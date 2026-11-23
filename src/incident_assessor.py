@@ -3,25 +3,28 @@ Belize Cyber First Aid Agent
 Incident Assessment Engine
 
 Author: Daphne Stewart
-Version: 2.0
+Version: 3.0
 """
 
 import json
 from pathlib import Path
 
 
+# =====================================================
+# Data Loading
+# =====================================================
+
 DATA_DIR = Path(__file__).parent / "data"
 
 
 def load_json(filename):
-    """Load a JSON file from the data directory."""
+    """Load JSON configuration files."""
 
     with open(
         DATA_DIR / filename,
         "r",
         encoding="utf-8"
     ) as file:
-
         return json.load(file)
 
 
@@ -29,11 +32,19 @@ INCIDENTS = load_json("incidents.json")
 SEVERITY_MATRIX = load_json("severity_matrix.json")
 PRIVACY_MATRIX = load_json("privacy_impact_matrix.json")
 PERSONAL_DATA = load_json("personal_data_categories.json")
+QUESTIONS = load_json("incident_questions.json")
+ESCALATION_RULES = load_json("escalation_rules.json")
+REPORT_TEMPLATE = load_json("report_template.json")
+PLAYBOOKS = load_json("playbook_mapping.json")
 
+
+# =====================================================
+# Incident Identification
+# =====================================================
 
 def identify_incident(description):
     """
-    Identify incident type using keywords.
+    Identify incident type based on keywords.
     """
 
     description = description.lower()
@@ -43,44 +54,85 @@ def identify_incident(description):
         for keyword in incident["keywords"]:
 
             if keyword.lower() in description:
-
                 return incident_key
 
     return None
 
 
-def determine_privacy_impact(description, default_level):
+# =====================================================
+# Privacy Impact Assessment
+# =====================================================
+
+def determine_privacy_impact(
+    description,
+    default_level
+):
     """
-    Increase privacy impact based on detected data categories.
+    Determine privacy impact based on personal data indicators.
     """
 
     description = description.lower()
 
-    # Sensitive personal data
-    sensitive_examples = PERSONAL_DATA[
+    # Sensitive Personal Data = Critical
+
+    sensitive_entries = PERSONAL_DATA[
         "sensitive_personal_data"
     ]["examples"]
 
-    for example in sensitive_examples:
+    for item in sensitive_entries:
 
-        if example.lower() in description:
+        if item.lower() in description:
             return "Critical"
 
-    # Standard personal data
-    for category in PERSONAL_DATA.values():
+    # Other personal data = High
 
-        for example in category["examples"]:
+    for category_key, category in PERSONAL_DATA.items():
 
-            if example.lower() in description:
+        if category_key == "sensitive_personal_data":
+            continue
+
+        for item in category["examples"]:
+
+            if item.lower() in description:
                 return "High"
 
     return default_level
 
 
+# =====================================================
+# Escalation Logic
+# =====================================================
+
+def check_escalation(
+    incident_key,
+    severity,
+    privacy_impact
+):
+    """
+    Determine whether escalation is required.
+    """
+
+    auto_rules = ESCALATION_RULES[
+        "automatic_escalation"
+    ]
+
+    if severity in auto_rules["severity_levels"]:
+        return True
+
+    if privacy_impact in auto_rules["privacy_impact_levels"]:
+        return True
+
+    if incident_key in auto_rules["incident_types"]:
+        return True
+
+    return False
+
+
+# =====================================================
+# Assessment Engine
+# =====================================================
+
 def create_assessment(description):
-    """
-    Generate incident assessment.
-    """
 
     incident_key = identify_incident(description)
 
@@ -88,16 +140,24 @@ def create_assessment(description):
 
         return {
             "incident_type": "Unknown",
-            "severity": "Low",
-            "privacy_impact": "Low",
+            "business_severity": "Low",
             "priority": "Normal",
+            "response_target": "Manual Review",
+            "privacy_impact": "Low",
+            "privacy_description": "Unknown",
             "escalation_required": False,
             "data_protection_review": False,
             "playbook": "Manual Review Required",
+            "nist_functions": [
+                "Govern",
+                "Identify"
+            ],
+            "questions": QUESTIONS["generic"],
             "actions": [
                 "Collect additional information.",
-                "Identify affected systems.",
-                "Determine affected users."
+                "Determine affected systems.",
+                "Identify affected users.",
+                "Perform manual classification."
             ]
         }
 
@@ -110,40 +170,109 @@ def create_assessment(description):
 
     severity = incident["default_severity"]
 
-    severity_info = SEVERITY_MATRIX[severity]
-    privacy_info = PRIVACY_MATRIX[privacy_impact]
+    severity_details = SEVERITY_MATRIX[severity]
 
-    escalation_required = (
-        incident["escalate"]
-        or severity_info["escalate"]
+    privacy_details = PRIVACY_MATRIX[privacy_impact]
+
+    escalation_required = check_escalation(
+        incident_key,
+        severity,
+        privacy_impact
+    )
+
+    playbook_info = PLAYBOOKS.get(
+        incident_key,
+        {}
     )
 
     return {
         "incident_type": incident["name"],
-        "severity": severity,
-        "priority": severity_info["priority"],
-        "privacy_impact": privacy_impact,
-        "escalation_required": escalation_required,
+
+        "business_severity": severity,
+
+        "priority":
+            severity_details["priority"],
+
+        "response_target":
+            severity_details.get(
+                "response_target",
+                "Immediate"
+            ),
+
+        "privacy_impact":
+            privacy_impact,
+
+        "privacy_description":
+            privacy_details["description"],
+
+        "escalation_required":
+            escalation_required,
+
         "data_protection_review":
-            privacy_info["review_required"],
-        "playbook": incident["playbook"],
-        "actions": incident["immediate_actions"]
+            privacy_details["review_required"],
+
+        "playbook":
+            playbook_info.get(
+                "file_path",
+                "No playbook assigned"
+            ),
+
+        "nist_functions":
+            playbook_info.get(
+                "nist_functions",
+                ["Govern", "Identify"]
+            ),
+
+        "questions":
+            QUESTIONS.get(
+                incident_key,
+                QUESTIONS["generic"]
+            ),
+
+        "actions":
+            incident["immediate_actions"]
     }
 
 
+# =====================================================
+# Display Results
+# =====================================================
+
 def display_assessment(result):
-    """
-    Display assessment results.
-    """
 
-    print("\n" + "=" * 60)
+    print("\n" + "=" * 70)
     print("BELIZE CYBER FIRST AID AGENT")
-    print("=" * 60)
+    print("=" * 70)
 
-    print(f"\nIncident Type: {result['incident_type']}")
-    print(f"Business Severity: {result['severity']}")
-    print(f"Priority: {result['priority']}")
-    print(f"Privacy Impact: {result['privacy_impact']}")
+    print(
+        f"\nIncident Type: "
+        f"{result['incident_type']}"
+    )
+
+    print(
+        f"Business Severity: "
+        f"{result['business_severity']}"
+    )
+
+    print(
+        f"Priority: "
+        f"{result['priority']}"
+    )
+
+    print(
+        f"Response Target: "
+        f"{result['response_target']}"
+    )
+
+    print(
+        f"Privacy Impact: "
+        f"{result['privacy_impact']}"
+    )
+
+    print(
+        f"Privacy Description: "
+        f"{result['privacy_description']}"
+    )
 
     print(
         f"Escalation Required: "
@@ -160,32 +289,56 @@ def display_assessment(result):
         f"{result['playbook']}"
     )
 
+    print("\nNIST CSF 2.0 Functions:")
+
+    for function in result["nist_functions"]:
+        print(f"- {function}")
+
     print("\nImmediate Actions:")
 
-    for number, action in enumerate(
+    for index, action in enumerate(
         result["actions"],
         start=1
     ):
+        print(f"{index}. {action}")
 
-        print(f"{number}. {action}")
+    print("\nRecommended Triage Questions:")
 
-    print("\n" + "=" * 60)
+    for section, question_list in result[
+        "questions"
+    ].items():
 
+        print(
+            f"\n{section.replace('_', ' ').title()}"
+        )
+
+        for question in question_list:
+            print(f"- {question}")
+
+    print("\n" + "=" * 70)
+
+
+# =====================================================
+# Main
+# =====================================================
 
 def main():
 
     print("\nBelize Cyber First Aid Agent")
-    print("Incident Assessment Prototype\n")
+    print("Incident Assessment Prototype")
+    print("-" * 40)
 
-    incident_description = input(
-        "Describe the incident:\n\n> "
+    description = input(
+        "\nDescribe the incident:\n\n> "
     )
 
-    result = create_assessment(
-        incident_description
+    assessment = create_assessment(
+        description
     )
 
-    display_assessment(result)
+    display_assessment(
+        assessment
+    )
 
 
 if __name__ == "__main__":
