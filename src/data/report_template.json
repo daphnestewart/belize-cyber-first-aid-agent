@@ -1,0 +1,205 @@
+{
+  "version": "1.0",
+  "framework": "Belize Cyber First Aid Agent",
+  "report_types": {
+    "incident_report": {
+      "title": "Cybersecurity Incident Report",
+      "sections": [
+        {
+          "name": "Incident Information",
+          "fields": [
+            "incident_id",
+            "incident_title",
+            "incident_type",
+            "date_reported",
+            "date_discovered",
+            "reported_by",
+            "incident_owner",
+            "status"
+          ]
+        },
+        {
+          "name": "Classification",
+          "fields": [
+            "business_severity",
+            "privacy_impact",
+            "priority",
+            "escalation_required",
+            "data_protection_review_required"
+          ]
+        },
+        {
+          "name": "Executive Summary",
+          "fields": [
+            "incident_summary",
+            "business_impact",
+            "privacy_impact_summary",
+            "current_risk"
+          ]
+        },
+        {
+          "name": "Affected Assets",
+          "fields": [
+            "affected_users",
+            "affected_accounts",
+            "affected_devices",
+            "affected_systems",
+            "affected_applications"
+          ]
+        },
+        {
+          "name": "Personal Data Assessment",
+          "fields": [
+            "personal_data_involved",
+            "customer_data_involved",
+            "employee_data_involved",
+            "financial_information_involved",
+            "sensitive_personal_data_involved",
+            "estimated_individuals_affected"
+          ]
+        },
+        {
+          "name": "Incident Timeline",
+          "fields": [
+            "timeline_events"
+          ]
+        },
+        {
+          "name": "Containment Actions",
+          "fields": [
+            "containment_actions"
+          ]
+        },
+        {
+          "name": "Investigation Findings",
+          "fields": [
+            "root_cause",
+            "attack_vector",
+            "scope_of_impact",
+            "evidence_collected"
+          ]
+        },
+        {
+          "name": "Recovery Activities",
+          "fields": [
+            "recovery_actions",
+            "systems_restored",
+            "recovery_status"
+          ]
+        },
+        {
+          "name": "Belize Data Protection Review",
+          "fields": [
+            "privacy_assessment_completed",
+            "data_breach_assessment_completed",
+            "notification_assessment_completed",
+            "comments"
+          ]
+        },
+        {
+          "name": "Lessons Learned",
+          "fields": [
+            "lessons_learned",
+            "control_gaps",
+            "recommendations"
+          ]
+        },
+        {
+          "name": "Approval",
+          "fields": [
+            "prepared_by",
+            "reviewed_by",
+            "approved_by",
+            "date_closed"
+          ]
+        }
+      ]
+    },
+
+    "executive_summary": {
+      "title": "Executive Incident Summary",
+      "sections": [
+        {
+          "name": "Overview",
+          "fields": [
+            "incident_type",
+            "business_severity",
+            "privacy_impact",
+            "current_status"
+          ]
+        },
+        {
+          "name": "Business Impact",
+          "fields": [
+            "operational_impact",
+            "financial_impact",
+            "reputational_impact"
+          ]
+        },
+        {
+          "name": "Personal Data Impact",
+          "fields": [
+            "personal_data_involved",
+            "affected_individuals",
+            "privacy_risk"
+          ]
+        },
+        {
+          "name": "Recommended Actions",
+          "fields": [
+            "priority_actions"
+          ]
+        }
+      ]
+    },
+
+    "lessons_learned_report": {
+      "title": "Lessons Learned Report",
+      "sections": [
+        {
+          "name": "Incident Overview",
+          "fields": [
+            "incident_id",
+            "incident_type",
+            "incident_summary"
+          ]
+        },
+        {
+          "name": "Root Cause Analysis",
+          "fields": [
+            "root_cause",
+            "contributing_factors"
+          ]
+        },
+        {
+          "name": "What Worked Well",
+          "fields": [
+            "successful_actions"
+          ]
+        },
+        {
+          "name": "Improvement Opportunities",
+          "fields": [
+            "identified_gaps",
+            "corrective_actions"
+          ]
+        },
+        {
+          "name": "Future Recommendations",
+          "fields": [
+            "recommended_controls",
+            "training_requirements"
+          ]
+        }
+      ]
+    }
+  },
+
+  "required_fields": [
+    "incident_type",
+    "business_severity",
+    "privacy_impact",
+    "incident_summary",
+    "containment_actions"
+  ]
+}
