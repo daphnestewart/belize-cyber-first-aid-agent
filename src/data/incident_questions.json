@@ -1,0 +1,22 @@
+{
+  "phishing": [
+    "Was the email opened?",
+    "Was a link clicked?",
+    "Were credentials entered?",
+    "Was an attachment opened?"
+  ],
+
+  "ransomware": [
+    "Are files encrypted?",
+    "How many systems are affected?",
+    "Are backups available?",
+    "Has the system been disconnected from the network?"
+  ],
+
+  "data_breach": [
+    "What information was exposed?",
+    "How many individuals may be affected?",
+    "Is personal data involved?",
+    "Is sensitive personal data involved?"
+  ]
+}
