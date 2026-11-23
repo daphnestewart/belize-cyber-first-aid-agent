@@ -1,4 +1,5 @@
 """
+Dorothy
 Belize Cyber First Aid Agent
 Incident Assessment Engine
 
@@ -241,7 +242,8 @@ def create_assessment(description):
 def display_assessment(result):
 
     print("\n" + "=" * 70)
-    print("BELIZE CYBER FIRST AID AGENT")
+    print("DOROTHY")
+    print("The Belize Cyber First Aid Agent")
     print("=" * 70)
 
     print(
@@ -323,7 +325,8 @@ def display_assessment(result):
 # =====================================================
 
 def main():
-
+  
+    print("DOROTHY")
     print("\nBelize Cyber First Aid Agent")
     print("Incident Assessment Prototype")
     print("-" * 40)
