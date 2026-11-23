@@ -9,7 +9,7 @@ from src.incident_assessor import create_assessment
 
 st.set_page_config(
     page_title="Dorothy",
-    page_icon="assets/Dorothy.jpg",
+    page_icon="assets/LogoOnly.png",
     layout="wide"
 )
 
@@ -22,7 +22,7 @@ col1, col2 = st.columns([1, 3])
 
 with col1:
     st.image(
-        "assets/Dorothy.jpg",
+        "assets/LogoOnly.png",
         width=250
     )
 
@@ -214,7 +214,7 @@ if assess_button:
 with st.sidebar:
 
     st.image(
-        "assets/Dorothy.jpg",
+        "assets/LogoOnly.png",
         use_container_width=True
     )
 
