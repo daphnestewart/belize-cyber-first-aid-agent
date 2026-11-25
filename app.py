@@ -7,7 +7,9 @@ from src.conversation_engine import (
     get_progress,
     analyse_answers,
     adjust_severity,
-    generate_recommendations
+    generate_recommendations,
+    get_confidence_score,
+    get_missing_information
 )
 
 # =====================================================
@@ -24,36 +26,43 @@ st.set_page_config(
 # SESSION STATE
 # =====================================================
 
-defaults = {
-    "messages": [],
+DEFAULT_STATE = {
     "assessment_started": False,
-    "incident_description": "",
     "assessment": None,
+    "messages": [],
     "answers": {},
-    "question_index": 0,
     "current_question": None,
+    "timeline": [],
     "investigation_complete": False
 }
 
-for key, value in defaults.items():
+for key, value in DEFAULT_STATE.items():
 
     if key not in st.session_state:
-        st.session_state[key] = value
 
+        if isinstance(value, list):
+            st.session_state[key] = []
+
+        elif isinstance(value, dict):
+            st.session_state[key] = {}
+
+        else:
+            st.session_state[key] = value
 
 # =====================================================
 # HEADER
 # =====================================================
 
-col1, col2 = st.columns([1, 4])
+header_col1, header_col2 = st.columns([1, 4])
 
-with col1:
+with header_col1:
+
     st.image(
         "assets/LogoOnly.png",
-        width=220
+        width=180
     )
 
-with col2:
+with header_col2:
 
     st.title("Dorothy")
 
@@ -63,13 +72,12 @@ with col2:
 
     st.write(
         """
-        Dorothy assists Belizean organizations with
-        cybersecurity incident investigation,
-        privacy impact assessment,
-        and response planning.
+Dorothy helps Belizean organizations investigate, assess,
+and respond to cybersecurity incidents.
 
-        Inspired by Nurse Dorothy Mae Bradley.
-        """
+She gathers information step-by-step, evaluates business
+impact, privacy impact, and provides response guidance.
+"""
     )
 
 st.divider()
@@ -80,46 +88,66 @@ st.divider()
 
 with st.sidebar:
 
-    st.image(
-        "assets/LogoOnly.png",
-        use_container_width=True
-    )
+    st.markdown("## Investigation Status")
 
-    st.markdown("## Dorothy")
+    if st.session_state.assessment:
 
-    st.markdown(
-        """
-### Investigation Process
+        assessment = st.session_state.assessment
 
-1. Describe Incident
-2. Interview
-3. Assess Risk
-4. Review Findings
-5. Take Action
-"""
-    )
+        progress = get_progress(
+            assessment["incident_type"],
+            st.session_state.answers
+        )
 
-    st.markdown("---")
+        st.progress(progress)
 
-    st.markdown(
-        """
-### Frameworks
+        st.write(
+            f"Progress: {progress}%"
+        )
 
-- NIST CSF 2.0
-- Belize Data Protection Act
-- Incident Response Best Practices
-"""
-    )
+        missing = get_missing_information(
+            assessment["incident_type"],
+            st.session_state.answers
+        )
+
+        st.markdown("### Still Needed")
+
+        if missing:
+
+            for item in missing[:5]:
+
+                st.write(
+                    f"⬜ {item}"
+                )
+
+        else:
+
+            st.success(
+                "Investigation complete"
+            )
 
 # =====================================================
-# START ASSESSMENT
+# START SCREEN
 # =====================================================
 
 if not st.session_state.assessment_started:
 
+    st.header(
+        "Start an Investigation"
+    )
+
     incident_description = st.text_area(
-        "Describe the cybersecurity incident",
-        height=180
+        "Describe what happened",
+        height=180,
+        placeholder="""
+Examples:
+
+An employee entered credentials into a fake Microsoft login page.
+
+All computers are locked and a message is asking for money.
+
+A laptop containing customer information was stolen.
+"""
     )
 
     if st.button(
@@ -127,19 +155,25 @@ if not st.session_state.assessment_started:
         type="primary"
     ):
 
-        if incident_description.strip():
+        if not incident_description.strip():
+
+            st.warning(
+                "Please provide a description."
+            )
+
+        else:
 
             assessment = create_assessment(
                 incident_description
             )
 
-            st.session_state.assessment = assessment
-
-            st.session_state.incident_description = (
-                incident_description
+            st.session_state.assessment = (
+                assessment
             )
 
-            st.session_state.assessment_started = True
+            st.session_state.assessment_started = (
+                True
+            )
 
             first_question = get_next_question(
                 assessment["incident_type"],
@@ -156,11 +190,13 @@ if not st.session_state.assessment_started:
                     "role": "assistant",
                     "content":
                     f"""
-I have classified this incident as:
+I believe this may be:
 
 **{assessment['incident_type']}**
 
-I need additional information before finalizing the assessment.
+To understand the situation better, I need some additional information.
+
+**Question 1**
 
 {first_question}
 """
@@ -177,84 +213,83 @@ if st.session_state.assessment_started:
 
     assessment = st.session_state.assessment
 
-    # ==========================================
-    # LIVE ANALYSIS
-    # ==========================================
-
     analysis = analyse_answers(
         st.session_state.answers
     )
 
-    adjusted_severity = adjust_severity(
+    confidence = get_confidence_score(
+        st.session_state.answers
+    )
+
+    severity = adjust_severity(
         assessment["business_severity"],
         analysis["score"]
     )
 
-    recommendations = generate_recommendations(
-        st.session_state.answers
+    recommendations = (
+        generate_recommendations(
+            assessment["incident_type"],
+            st.session_state.answers
+        )
     )
 
     # ==========================================
-    # LIVE STATUS DASHBOARD
+    # LIVE DASHBOARD
     # ==========================================
 
-    st.subheader("Dorothy's Current Assessment")
+    st.header(
+        "Current Assessment"
+    )
 
-    c1, c2, c3, c4 = st.columns(4)
+    c1, c2, c3, c4, c5 = st.columns(5)
 
     with c1:
+
         st.metric(
-            "Incident Type",
+            "Incident",
             assessment["incident_type"]
         )
 
     with c2:
+
         st.metric(
             "Severity",
-            adjusted_severity
+            severity
         )
 
     with c3:
+
         st.metric(
-            "Privacy Impact",
+            "Privacy",
             analysis["privacy_impact"]
         )
 
     with c4:
+
         st.metric(
             "Risk Score",
             analysis["score"]
         )
 
-    progress = get_progress(
-        assessment["incident_type"],
-        st.session_state.answers
-    )
+    with c5:
 
-    st.progress(progress)
-
-    st.caption(
-        f"Investigation Progress: {progress}%"
-    )
-
-    if analysis["findings"]:
-
-        st.info(
-            f"{len(analysis['findings'])} risk indicators currently identified."
+        st.metric(
+            "Confidence",
+            f"{confidence}%"
         )
 
     st.divider()
 
     # ==========================================
-    # CHAT + LIVE PANEL
+    # LAYOUT
     # ==========================================
 
-    chat_col, findings_col = st.columns(
+    chat_col, info_col = st.columns(
         [2, 1]
     )
 
     # ==========================================
-    # CHAT WINDOW
+    # CHAT
     # ==========================================
 
     with chat_col:
@@ -273,12 +308,10 @@ if st.session_state.assessment_started:
                     message["content"]
                 )
 
-        if (
-            not st.session_state.investigation_complete
-        ):
+        if not st.session_state.investigation_complete:
 
             user_response = st.chat_input(
-                "Enter your response..."
+                "Type your response..."
             )
 
             if user_response:
@@ -290,6 +323,10 @@ if st.session_state.assessment_started:
                 st.session_state.answers[
                     current_question
                 ] = user_response
+
+                st.session_state.timeline.append(
+                    f"{current_question} → {user_response}"
+                )
 
                 st.session_state.messages.append(
                     {
@@ -308,14 +345,14 @@ if st.session_state.assessment_started:
 
                 if next_question:
 
-                    st.session_state.current_question = (
-                        next_question
-                    )
-
-                    # LIVE ANALYSIS MESSAGE
-
                     current_analysis = analyse_answers(
                         st.session_state.answers
+                    )
+
+                    current_confidence = (
+                        get_confidence_score(
+                            st.session_state.answers
+                        )
                     )
 
                     current_severity = (
@@ -323,8 +360,14 @@ if st.session_state.assessment_started:
                             assessment[
                                 "business_severity"
                             ],
-                            current_analysis["score"]
+                            current_analysis[
+                                "score"
+                            ]
                         )
+                    )
+
+                    st.session_state.current_question = (
+                        next_question
                     )
 
                     st.session_state.messages.append(
@@ -332,11 +375,14 @@ if st.session_state.assessment_started:
                             "role": "assistant",
                             "content":
                             f"""
-Current Severity: **{current_severity}**
+### Current Assessment
 
-Current Privacy Impact: **{current_analysis['privacy_impact']}**
+- Severity: **{current_severity}**
+- Privacy Impact: **{current_analysis['privacy_impact']}**
+- Confidence: **{current_confidence}%**
+- Findings: **{len(current_analysis['findings'])}**
 
-Next Question:
+### Next Question
 
 {next_question}
 """
@@ -352,26 +398,30 @@ Next Question:
                 st.rerun()
 
     # ==========================================
-    # LIVE FINDINGS
+    # RIGHT PANEL
     # ==========================================
 
-    with findings_col:
+    with info_col:
 
         st.subheader(
-            "Current Findings"
+            "Findings"
         )
 
         if analysis["findings"]:
 
             for finding in analysis["findings"]:
 
-                st.warning(finding)
+                st.warning(
+                    finding
+                )
 
         else:
 
             st.success(
-                "No major indicators identified yet."
+                "No significant indicators identified yet."
             )
+
+        st.divider()
 
         st.subheader(
             "Recommendations"
@@ -386,11 +436,25 @@ Next Question:
         else:
 
             st.write(
-                "Recommendations will appear as risk indicators are identified."
+                "Recommendations will appear as information is gathered."
             )
 
+        st.divider()
+
+        st.subheader(
+            "Timeline"
+        )
+
+        if st.session_state.timeline:
+
+            for item in st.session_state.timeline:
+
+                st.write(
+                    f"• {item}"
+                )
+
 # =====================================================
-# FINAL RESULTS
+# FINAL ASSESSMENT
 # =====================================================
 
 if st.session_state.investigation_complete:
@@ -401,13 +465,16 @@ if st.session_state.investigation_complete:
         st.session_state.answers
     )
 
-    adjusted_severity = adjust_severity(
+    severity = adjust_severity(
         assessment["business_severity"],
         analysis["score"]
     )
 
-    recommendations = generate_recommendations(
-        st.session_state.answers
+    recommendations = (
+        generate_recommendations(
+            assessment["incident_type"],
+            st.session_state.answers
+        )
     )
 
     st.divider()
@@ -421,7 +488,11 @@ if st.session_state.investigation_complete:
     )
 
     st.write(
-        f"**Business Severity:** {adjusted_severity}"
+        f"**Incident Type:** {assessment['incident_type']}"
+    )
+
+    st.write(
+        f"**Business Severity:** {severity}"
     )
 
     st.write(
@@ -433,17 +504,17 @@ if st.session_state.investigation_complete:
     )
 
     st.write(
-        f"**Escalation Required:** {'Yes' if assessment['escalation_required'] else 'No'}"
+        f"**Priority:** {assessment['priority']}"
     )
 
     st.write(
-        f"**Belize Data Protection Review:** {'Required' if assessment['data_protection_review'] else 'Not Required'}"
+        f"**Response Target:** {assessment['response_target']}"
     )
 
     st.divider()
 
     st.subheader(
-        "Immediate Actions"
+        "Recommended Immediate Actions"
     )
 
     for action in assessment["actions"]:
@@ -460,8 +531,11 @@ if st.session_state.investigation_complete:
         "Start New Investigation"
     ):
 
-        for key in list(defaults.keys()):
-            del st.session_state[key]
+        for key in list(DEFAULT_STATE.keys()):
+
+            if key in st.session_state:
+
+                del st.session_state[key]
 
         st.rerun()
 
@@ -473,13 +547,14 @@ st.divider()
 
 st.caption(
     """
-Dorothy v2.1
+Dorothy v2.2
 
-The Belize Cyber First Aid Agent
-
-Now providing live investigation updates,
-dynamic risk scoring,
-branching questions,
-and real-time recommendations.
+Features:
+• Dynamic investigations
+• Confidence scoring
+• Missing information tracking
+• Investigation timeline
+• Live assessment updates
+• Incident-specific playbooks
 """
 )
