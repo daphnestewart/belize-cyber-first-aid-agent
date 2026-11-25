@@ -1,0 +1,103 @@
+{
+  "Phishing": {
+    "containment": [
+      "Were credentials entered into the suspicious website?",
+      "Has the password been reset since the incident?",
+      "Have active sessions been revoked?",
+      "Did users normally sign in using a second verification step such as a mobile app, code, or text message?",
+      "Have sign-in logs been reviewed?"
+    ],
+
+    "business": [
+      "Did the affected user have access to customer information?",
+      "Did the affected user have access to employee records?",
+      "Was any financial transaction requested or completed?"
+    ],
+
+    "privacy": [
+      "Could names, email addresses, payroll records, customer records, or other personal information have been exposed?"
+    ]
+  },
+
+  "Unauthorized Access": {
+    "containment": [
+      "Has the affected account been disabled?",
+      "Has the password been changed?",
+      "Have active sessions been revoked?",
+      "Has access been removed?"
+    ],
+
+    "business": [
+      "Was an administrator account involved?",
+      "Are business operations affected?",
+      "How many accounts appear affected?"
+    ],
+
+    "privacy": [
+      "Could customer information have been accessed?",
+      "Could employee information have been accessed?",
+      "Could personal information have been viewed, copied, or downloaded?"
+    ]
+  },
+
+  "Data Breach": {
+    "containment": [
+      "Has the exposure been stopped?",
+      "Have affected systems been isolated?",
+      "Has evidence been preserved?"
+    ],
+
+    "business": [
+      "Approximately how many records may be affected?",
+      "Are business operations affected?"
+    ],
+
+    "privacy": [
+      "Does the exposed information include customer records?",
+      "Does the exposed information include employee records?",
+      "Does the exposed information include financial information?",
+      "Does the exposed information include government IDs, payroll, HR files, or medical information?"
+    ]
+  },
+
+  "Ransomware": {
+    "containment": [
+      "Are files inaccessible or encrypted?",
+      "Is a payment being demanded?",
+      "Have affected systems been disconnected from the network?",
+      "Have backups been checked?"
+    ],
+
+    "business": [
+      "Are multiple computers affected?",
+      "Can staff continue normal work?",
+      "Are critical systems unavailable?"
+    ],
+
+    "privacy": [
+      "Did the affected systems contain customer data?",
+      "Did the affected systems contain employee information?",
+      "Could sensitive information have been exposed?"
+    ]
+  },
+
+  "Lost or Stolen Device": {
+    "containment": [
+      "Has the device been reported lost or stolen?",
+      "Has remote lock been attempted?",
+      "Has remote wipe been attempted?",
+      "Have passwords been changed?"
+    ],
+
+    "business": [
+      "Did the device contain business applications?",
+      "Did the device contain administrative access?"
+    ],
+
+    "privacy": [
+      "Did the device contain customer information?",
+      "Did the device contain employee information?",
+      "Did the device contain confidential business information?"
+    ]
+  }
+}
