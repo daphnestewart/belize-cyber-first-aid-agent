@@ -1,14 +1,7 @@
 """
 Dorothy Conversation Engine
 
-Smarter investigation engine with:
-
-- Answer normalization
-- Risk-based branching
-- Business-friendly investigations
-- Confidence scoring
-- Missing information tracking
-- Dynamic risk assessment
+Loads investigation playbooks dynamically.
 
 Author: Daphne Stewart
 """
@@ -30,52 +23,35 @@ def load_json(filename):
         return json.load(file)
 
 
-QUESTIONS = load_json(
-    "incident_questions.json"
+PLAYBOOKS = load_json(
+    "investigation_playbooks.json"
 )
 
-# =====================================================
-# ANSWER NORMALIZATION
-# =====================================================
 
 YES_WORDS = [
     "yes",
-    "y",
     "yeah",
     "yep",
     "sure",
     "correct",
     "obviously",
     "definitely",
-    "of course",
-    "certainly",
     "absolutely"
 ]
 
 NO_WORDS = [
     "no",
-    "n",
     "nope",
     "negative"
 ]
 
 UNKNOWN_WORDS = [
-    "unknown",
+    "maybe",
     "unsure",
+    "unknown",
     "not sure",
     "dont know",
-    "don't know",
-    "maybe"
-]
-
-HIGH_IMPACT_WORDS = [
-    "all",
-    "everyone",
-    "entire company",
-    "whole office",
-    "every computer",
-    "all computers",
-    "everything"
+    "don't know"
 ]
 
 
@@ -95,203 +71,30 @@ def normalize_answer(answer):
     return text
 
 
-# =====================================================
-# INCIDENT TYPE MAPPING
-# =====================================================
+def get_questions(incident_type):
 
-def normalise_incident_type(
-    incident_type
-):
-
-    mapping = {
-
-        "Phishing":
-            "phishing",
-
-        "Unauthorized Access":
-            "unauthorized_access",
-
-        "Data Breach":
-            "data_breach",
-
-        "Ransomware":
-            "ransomware",
-
-        "Lost or Stolen Device":
-            "lost_device",
-
-        "Lost Device":
-            "lost_device",
-
-        "Unknown":
-            "generic"
-    }
-
-    return mapping.get(
+    playbook = PLAYBOOKS.get(
         incident_type,
-        "generic"
-    )
-
-
-# =====================================================
-# BUSINESS-FRIENDLY QUESTIONS
-# =====================================================
-
-QUESTION_REPLACEMENTS = {
-
-    "Was Multi-Factor Authentication enabled?":
-        "Did users normally sign in using a second verification step such as a mobile app, code, or text message?",
-
-    "Is sensitive personal data involved?":
-        "Did the affected systems contain payroll, medical, HR, banking, government ID, or other confidential personal information?",
-
-    "Could personal data have been accessed?":
-        "Could someone have viewed names, email addresses, phone numbers, payroll records, customer records, or other information about people?"
-}
-
-
-# =====================================================
-# BASE QUESTIONS
-# =====================================================
-
-def get_questions(
-    incident_type
-):
-
-    key = normalise_incident_type(
-        incident_type
-    )
-
-    incident_questions = QUESTIONS.get(
-        key,
-        QUESTIONS["generic"]
+        {}
     )
 
     questions = []
 
-    questions.extend(
-        incident_questions["initial_questions"]
-    )
+    for section in [
+        "containment",
+        "business",
+        "privacy"
+    ]:
 
-    questions.extend(
-        incident_questions["business_impact_questions"]
-    )
-
-    questions.extend(
-        incident_questions["privacy_questions"]
-    )
-
-    improved_questions = []
-
-    for question in questions:
-
-        improved_questions.append(
-            QUESTION_REPLACEMENTS.get(
-                question,
-                question
+        questions.extend(
+            playbook.get(
+                section,
+                []
             )
         )
 
-    return improved_questions
+    return questions
 
-
-# =====================================================
-# RISK-BASED FOLLOW-UPS
-# =====================================================
-
-def get_branching_questions(
-    incident_type,
-    answers
-):
-
-    follow_ups = []
-
-    for question, answer in answers.items():
-
-        normalized = normalize_answer(
-            answer
-        )
-
-        q = question.lower()
-
-        # PHISHING
-
-        if (
-            "credentials entered"
-            in q
-            and normalized == "yes"
-        ):
-
-            add = [
-
-                "Has the password been reset since the incident?",
-
-                "Have all active sessions been revoked?",
-
-                "Have sign-in logs been reviewed?",
-
-                "Did the user have access to customer information?",
-
-                "Did the user have access to employee records?"
-            ]
-
-            for item in add:
-
-                if item not in answers:
-                    follow_ups.append(item)
-
-        # RANSOMWARE
-
-        if (
-            "asking for money" in answer.lower()
-            or "ransom" in answer.lower()
-        ):
-
-            add = [
-
-                "Are files inaccessible or encrypted?",
-
-                "Have affected systems been disconnected from the network?",
-
-                "Are backups available?",
-
-                "Are multiple computers affected?",
-
-                "Can employees continue normal work operations?"
-            ]
-
-            for item in add:
-
-                if item not in answers:
-                    follow_ups.append(item)
-
-        # BUSINESS-WIDE IMPACT
-
-        if any(
-            indicator in answer.lower()
-            for indicator in HIGH_IMPACT_WORDS
-        ):
-
-            add = [
-
-                "Are critical business operations currently disrupted?",
-
-                "Has management been notified?",
-
-                "Do you know how many users are affected?"
-            ]
-
-            for item in add:
-
-                if item not in answers:
-                    follow_ups.append(item)
-
-    return list(dict.fromkeys(follow_ups))
-
-
-# =====================================================
-# NEXT QUESTION
-# =====================================================
 
 def get_next_question(
     incident_type,
@@ -302,25 +105,14 @@ def get_next_question(
     if answers is None:
         answers = {}
 
-    base_questions = get_questions(
+    questions = get_questions(
         incident_type
     )
 
-    follow_ups = get_branching_questions(
-        incident_type,
-        answers
-    )
-
-    all_questions = (
-        follow_ups +
-        base_questions
-    )
-
     remaining = [
-
-        question
-        for question in all_questions
-        if question not in answers
+        q
+        for q in questions
+        if q not in answers
     ]
 
     if not remaining:
@@ -328,10 +120,6 @@ def get_next_question(
 
     return remaining[0]
 
-
-# =====================================================
-# INVESTIGATION PROGRESS
-# =====================================================
 
 def get_progress(
     incident_type,
@@ -344,27 +132,15 @@ def get_progress(
         )
     )
 
-    total += len(
-        get_branching_questions(
-            incident_type,
-            answers
-        )
-    )
-
     if total == 0:
         return 100
 
-    progress = int(
-        (len(answers) / total)
+    return int(
+        len(answers)
+        / total
         * 100
     )
 
-    return min(progress, 100)
-
-
-# =====================================================
-# CONFIDENCE
-# =====================================================
 
 def get_confidence_score(
     answers
@@ -372,12 +148,9 @@ def get_confidence_score(
 
     confidence = 50
 
-    for question, answer in answers.items():
+    for answer in answers.values():
 
         text = answer.lower()
-
-        if "asking for money" in text:
-            confidence += 20
 
         if "all" in text:
             confidence += 10
@@ -388,33 +161,31 @@ def get_confidence_score(
         if "encrypted" in text:
             confidence += 20
 
-    return min(confidence, 100)
+        if "asking for money" in text:
+            confidence += 20
 
+    return min(
+        confidence,
+        100
+    )
 
-# =====================================================
-# MISSING INFO
-# =====================================================
 
 def get_missing_information(
     incident_type,
     answers
 ):
 
-    questions = get_questions(
-        incident_type
-    )
-
     return [
 
         question
-        for question in questions
+
+        for question in get_questions(
+            incident_type
+        )
+
         if question not in answers
     ]
 
-
-# =====================================================
-# ANALYSIS
-# =====================================================
 
 def analyse_answers(
     answers
@@ -422,96 +193,41 @@ def analyse_answers(
 
     score = 0
 
-    privacy_impact = "Low"
-
     findings = []
+
+    privacy_impact = "Low"
 
     for question, answer in answers.items():
 
+        a = normalize_answer(
+            answer
+        )
+
         q = question.lower()
-        a = normalize_answer(answer)
 
-        raw = answer.lower()
+        if a == "yes":
 
-        if "credentials entered" in q and a == "yes":
+            score += 1
 
-            score += 4
-
-            findings.append(
-                "Credentials were entered into a potentially malicious website."
-            )
-
-        if any(
-            word in raw
-            for word in HIGH_IMPACT_WORDS
-        ):
-
-            score += 4
-
-            findings.append(
-                "Incident appears to affect a large number of systems or users."
-            )
-
-        if (
-            "business operation"
-            in q
-            and a == "yes"
-        ):
-
-            score += 3
-
-            findings.append(
-                "Business operations are disrupted."
-            )
-
-        if (
-            "customer information"
-            in q
-            and a == "yes"
-        ):
+        if "customer" in q and a == "yes":
 
             privacy_impact = "High"
 
-            score += 3
-
             findings.append(
-                "Customer information may be involved."
+                "Customer data involvement identified."
             )
 
-        if (
-            "employee information"
-            in q
-            and a == "yes"
-        ):
+            score += 3
+
+        if "employee" in q and a == "yes":
 
             score += 2
 
-            if privacy_impact == "Low":
-                privacy_impact = "Medium"
-
             findings.append(
-                "Employee information may be involved."
+                "Employee information involvement identified."
             )
 
-        if (
-            "personal data"
-            in q
-            and a == "yes"
-        ):
-
-            privacy_impact = "High"
-
-            score += 3
-
-            findings.append(
-                "Personal data may have been exposed."
-            )
-
-        if (
-            "encrypted"
-            in q
-            and a == "yes"
-        ):
+        if "encrypted" in q and a == "yes":
 
             score += 5
 
@@ -519,40 +235,20 @@ def analyse_answers(
                 "Files appear encrypted."
             )
 
-        if (
-            "backups available"
-            in q
-            and a == "no"
-        ):
+        if "administrator" in q and a == "yes":
 
-            score += 3
+            score += 4
 
             findings.append(
-                "No backups appear available."
-            )
-
-        if (
-            "password been reset"
-            in q
-            and a == "no"
-        ):
-
-            score += 3
-
-            findings.append(
-                "Compromised credentials may still be active."
+                "Administrator account involvement identified."
             )
 
     return {
         "score": score,
-        "findings": findings,
-        "privacy_impact": privacy_impact
+        "privacy_impact": privacy_impact,
+        "findings": findings
     }
 
-
-# =====================================================
-# SEVERITY
-# =====================================================
 
 def adjust_severity(
     base_severity,
@@ -582,71 +278,56 @@ def adjust_severity(
     return levels[index]
 
 
-# =====================================================
-# RECOMMENDATIONS
-# =====================================================
-
 def generate_recommendations(
+    incident_type,
     answers
 ):
 
     recommendations = []
 
-    for question, answer in answers.items():
+    if incident_type == "Phishing":
 
-        q = question.lower()
-        a = normalize_answer(answer)
+        recommendations.extend([
+            "Reset affected passwords immediately.",
+            "Review mailbox rules.",
+            "Review sign-in logs.",
+            "Enable MFA where not already enabled."
+        ])
 
-        if (
-            "password been reset"
-            in q
-            and a == "no"
-        ):
+    elif incident_type == "Unauthorized Access":
 
-            recommendations.append(
-                "Reset affected passwords immediately."
-            )
+        recommendations.extend([
+            "Disable compromised accounts.",
+            "Revoke all active sessions.",
+            "Review privileged account activity.",
+            "Preserve audit logs."
+        ])
 
-        if (
-            "active sessions"
-            in q
-            and a == "no"
-        ):
+    elif incident_type == "Data Breach":
 
-            recommendations.append(
-                "Revoke all active sessions immediately."
-            )
+        recommendations.extend([
+            "Contain the exposure.",
+            "Identify affected data subjects.",
+            "Assess Data Protection obligations.",
+            "Preserve evidence."
+        ])
 
-        if (
-            "customer information"
-            in q
-            and a == "yes"
-        ):
+    elif incident_type == "Ransomware":
 
-            recommendations.append(
-                "Perform a Belize Data Protection impact assessment."
-            )
+        recommendations.extend([
+            "Disconnect affected systems immediately.",
+            "Prevent further spread.",
+            "Assess backup availability.",
+            "Notify management immediately."
+        ])
 
-        if (
-            "encrypted"
-            in q
-            and a == "yes"
-        ):
+    elif incident_type == "Lost or Stolen Device":
 
-            recommendations.append(
-                "Disconnect affected systems from the network immediately."
-            )
+        recommendations.extend([
+            "Attempt remote wipe.",
+            "Change passwords.",
+            "Revoke active sessions.",
+            "Assess data exposure."
+        ])
 
-        if (
-            "backups available"
-            in q
-            and a == "no"
-        ):
-
-            recommendations.append(
-                "Escalate immediately because recovery options may be limited."
-            )
-
-    return sorted(
-        list(set(recommendations))
-    )
+    return recommendations
